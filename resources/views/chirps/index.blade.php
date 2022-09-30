@@ -29,9 +29,8 @@
                                     <small class="text-sm text-indigo-500 bg-indigo-100 font-extrabold px-2 rounded-full">{{ __('edited') }}</small>
                                 @endunless
                             </div>
+                            
                             @if ($chirp->user->is(auth()->user()))
-                                
-                            @endif
                             <x-dropdown>
                                 <x-slot name="trigger">
                                     <button>
@@ -44,9 +43,18 @@
                                     <x-dropdown-link :href="route('chirps.edit', $chirp)">
                                         {{ __('Edit') }}
                                     </x-dropdown-link>
+
+                                    <form method="POST" action="{{ route('chirps.destroy', $chirp) }}">
+                                        @csrf
+                                        @method('delete')
+                                        <x-dropdown-link class="text-red-600" :href="route('chirps.destroy', $chirp)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                            {{ __('Delete') }}
+                                        </x-dropdown-link>
+                                    </form>
                                 </x-slot>
                             </x-dropdown>   
-                            
+                            @endif
+        
                         </div>
                         <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                     </div>
