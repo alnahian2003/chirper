@@ -23,8 +23,30 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <span class="text-gray-800">{{ $chirp->user->name }}</span>
-                                <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->format('j M Y, g:i a') }}</small>
+                                <small class="ml-2 text-sm text-gray-600">{{ $chirp->created_at->diffForHumans() }}</small>
+
+                                @unless ($chirp->created_at->eq($chirp->updated_at))
+                                    <small class="text-sm text-indigo-500 bg-indigo-100 font-extrabold px-2 rounded-full">{{ __('edited') }}</small>
+                                @endunless
                             </div>
+                            @if ($chirp->user->is(auth()->user()))
+                                
+                            @endif
+                            <x-dropdown>
+                                <x-slot name="trigger">
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        </svg>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('chirps.edit', $chirp)">
+                                        {{ __('Edit') }}
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>   
+                            
                         </div>
                         <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
                     </div>

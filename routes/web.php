@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store'])
-    ->middleware(['auth']);
+    ->only(['index', 'store', 'edit', 'update'])
+    ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
